@@ -37,6 +37,13 @@ app.get('/api/persons/:id', (request, response) => {
     person ? response.json(person) : response.sendStatus(404).end();
 })
 
+app.delete('/api/persons/:id', (request, response) => {
+    const id = +request.params.id;
+    const length = persons.length;
+    persons = persons.filter(person => person.id !== id);
+    persons.length !== length ? response.sendStatus(204).end() : response.sendStatus(404).end();
+})
+
 app.get('/info', (request, response) => {
     const date = new Date();
     const infoMessage = `<h1>Info</h1><p>Phonebook has info for ${persons.length} people.</p><p>${date}</p>`
