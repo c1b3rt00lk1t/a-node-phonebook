@@ -2,6 +2,7 @@
 const express = require('express');
 
 const app = express();
+app.use(express.json())
 
 let persons = [
     { 
@@ -42,6 +43,15 @@ app.delete('/api/persons/:id', (request, response) => {
     const length = persons.length;
     persons = persons.filter(person => person.id !== id);
     persons.length !== length ? response.sendStatus(204).end() : response.sendStatus(404).end();
+})
+
+app.post('/api/persons/', (request, response) => {
+    const body = request.body;
+ 
+    const id = Math.floor(Math.random() * 10000);
+    body.id = id;
+    persons.push(body);
+    response.json(body)
 })
 
 app.get('/info', (request, response) => {
