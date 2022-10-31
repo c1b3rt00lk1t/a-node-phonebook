@@ -31,11 +31,16 @@ app.get('/api/persons', (request, response) => {
     response.json(persons);
 })
 
+app.get('/api/persons/:id', (request, response) => {
+    const id = +request.params.id;
+    const person = persons.find(person => person.id === id);
+    person ? response.json(person) : response.sendStatus(404).end();
+})
+
 app.get('/info', (request, response) => {
     const date = new Date();
     const infoMessage = `<h1>Info</h1><p>Phonebook has info for ${persons.length} people.</p><p>${date}</p>`
-    response.send(infoMessage);
-
+    response.sendStatus(infoMessage);
 })
 
 
