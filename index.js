@@ -1,29 +1,28 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const Person = require("./models/people");
-console.log(Person)
+console.log(Person);
 const morgan = require("morgan");
 
-
-app.use(express.static('build'))
+app.use(express.static("build"));
 app.use(express.json());
-morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+morgan.token("body", function (req, res) {
+  return JSON.stringify(req.body);
+});
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms :body")
+);
 
-const cors = require('cors')
-app.use(cors())
+const cors = require("cors");
+app.use(cors());
 
-
-
-
-
-app.get('/', (req, res) => {
-  res.send('<h1>Phonebook</h1>')
-})
+app.get("/", (req, res) => {
+  res.send("<h1>Phonebook</h1>");
+});
 
 app.get("/api/persons", (request, response) => {
-  Person.find({}).then(persons => response.json(persons));
+  Person.find({}).then((persons) => response.json(persons));
 });
 
 app.get("/api/persons/:id", (request, response) => {
@@ -49,19 +48,13 @@ app.post("/api/persons/", (request, response) => {
       error: "content missing",
     });
   } else if (!body.name || !body.number) {
-    return response.status(400).json({ 
-      error: "missing name or number" 
-    });
-  } else if (persons.find((person) => person.name === body.name)) {
-    return response.status(400).json({ 
-      error: "name must be unique"
+    return response.status(400).json({
+      error: "missing name or number",
     });
   }
 
-  const id = Math.floor(Math.random() * 10000);
-  body.id = id;
-  persons.push(body);
-  response.json(body);
+  const person = new Person(body);
+  person.save().then((res) => response.json(res));
 });
 
 app.get("/info", (request, response) => {
@@ -70,7 +63,7 @@ app.get("/info", (request, response) => {
   response.sendStatus(infoMessage);
 });
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
