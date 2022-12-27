@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require("express");
 const morgan = require("morgan");
-
+const Person = require("./models/people.js");
 
 
 const app = express();
@@ -34,6 +35,8 @@ let persons = [
     number: "39-23-6423122",
   },
 ];
+
+
 
 app.get('/', (req, res) => {
   res.send('<h1>Phonebook</h1>')
