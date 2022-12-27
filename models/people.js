@@ -1,16 +1,7 @@
 const mongoose = require('mongoose');
 const url = process.env.MONGODB_URI;
-console.log(url);
-mongoose.set('strictQuery', false);
 
-mongoose
-  .connect(url)
-  .then(result => {
-    console.log('connected to MongoDB')
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
+mongoose.connect(url)
 
 
 const personSchema = new mongoose.Schema({
@@ -18,6 +9,6 @@ const personSchema = new mongoose.Schema({
     number: String,
 });
 
-module.export = mongoose.model('Person', personSchema);
+module.exports = mongoose.model('Person', personSchema);
 
 
