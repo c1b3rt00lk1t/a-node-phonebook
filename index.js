@@ -30,12 +30,7 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  const id = +request.params.id;
-  const length = persons.length;
-  persons = persons.filter((person) => person.id !== id);
-  persons.length !== length
-    ? response.sendStatus(204).end()
-    : response.sendStatus(404).end();
+  Person.deleteOne({_id: request.params.id}).then(_ => response.json({id: request.params.id}));
 });
 
 app.post("/api/persons/", (request, response) => {
